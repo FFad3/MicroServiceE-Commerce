@@ -31,7 +31,7 @@ namespace ProductService.Data
                     {
                         Id = i,
                         Name = $"Product[{i}]",
-                        Price = Math.Round(rnd.NextDouble() * rnd.Next(70, 100), 2)
+                        Price = (decimal)Math.Round(rnd.NextDouble() * rnd.Next(70, 100), 2)
                     });
                 context.Products.AddRange(products);
 

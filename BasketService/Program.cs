@@ -1,8 +1,7 @@
-using ProductService.Data;
 using Serilog;
 using Serilog.Events;
 
-namespace ProductService
+namespace BasketService
 {
     public class Program
     {
@@ -22,8 +21,8 @@ namespace ProductService
                 var builder = WebApplication.CreateBuilder(args);
 
                 // Add services to the container.
-                builder.Services.RegisterAllServices(builder.Environment, builder.Configuration);
-                
+                builder.Services.RegisterAllServices();
+               
                 // Set logger as SeriLog
                 builder.Logging.ClearProviders();
                 builder.Host.UseSerilog();
@@ -42,8 +41,6 @@ namespace ProductService
                 app.UseAuthorization();
 
                 app.MapControllers();
-
-                PrepDb.PrepPopulation(app);
 
                 app.Run();
             }

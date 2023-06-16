@@ -6,7 +6,7 @@
     <ProjectGuid>9319595e-fea9-4ebc-bbf4-d38afe93b0ca</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
-    <DockerServiceName>product-service</DockerServiceName>
+    <DockerServiceName>basket-service</DockerServiceName>
 	<DockerComposeProjectName>microservice-ecommerce</DockerComposeProjectName>
   </PropertyGroup>
   <ItemGroup>

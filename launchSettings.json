@@ -7,20 +7,11 @@
       "composeLaunchServiceName": "basket-service",
       "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
       "serviceActions": {
-        "product-service": "StartDebugging",
-        "product-db": "StartWithoutDebugging",
+        "product-service": "DoNotStart",
+        "product-db": "DoNotStart",
         "basket-service": "StartDebugging",
-        "seq": "StartWithoutDebugging"
-      }
-    },
-    "Test": {
-      "commandName": "DockerCompose",
-      "commandVersion": "1.0",
-      "serviceActions": {
-        "basket-service": "StartWithoutDebugging",
-        "product-db": "StartWithoutDebugging",
-        "product-service": "StartWithoutDebugging",
-        "seq": "StartWithoutDebugging"
+        "seq": "StartWithoutDebugging",
+        "basket-redis": "StartWithoutDebugging"
       }
     }
   }

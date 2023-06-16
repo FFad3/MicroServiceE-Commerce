@@ -6,7 +6,7 @@ networks:
 volumes:
   products-db:
     driver: local
-  basket-cache:
+  basket-redis-cache:
     driver: local
   seq-logs:
     driver: local
@@ -65,8 +65,8 @@ services:
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
     networks:
     - services-network
-    #depends_on:
-    #- redis-for-basket
+    depends_on:
+    - basket-redis
 
   seq:
     image: datalust/seq:latest
@@ -87,15 +87,17 @@ services:
     networks:
     - services-network
 
-  #redis-for-basket:
-  #  container_name: basket-redis
-  #  image: redis:alpine
-  #  restart: always
-  #  ports:
-  #    - "6379:6379"
-  #  networks:
-  #  - services-network
-  # message-bus: rabbiitMQ
+  basket-redis:
+    container_name: basket-redis
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+    - basket-redis-cache:/data
+    networks:
+    - services-network
+   #message-bus: rabbiitMQ
 
 
 
