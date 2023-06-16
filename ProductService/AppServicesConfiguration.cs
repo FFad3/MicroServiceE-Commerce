@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using ProductService.Contracts;
 using ProductService.Data;
+using Serilog;
 
 namespace ProductService
 {
@@ -21,17 +22,18 @@ namespace ProductService
 
         private static void RegisterDbContext(this IServiceCollection services, IWebHostEnvironment env, IConfiguration conf)
         {
+            var logger = Log.ForContext(typeof(AppServicesConfiguration));
             //Configure db context
             if (env.IsProduction())
             {
-                Console.WriteLine("--> Using SqlServer Db");
+                logger.Information("service starts as Production => use sqlserver");
                 services.AddDbContext<AppDbContext>(opt =>
                 opt.UseSqlServer(conf.GetConnectionString("ProductDbConn"))
                 );
             }
             else
             {
-                Console.WriteLine("--> Using InMem Db");
+                logger.Information("service starts as Production => use in memory database");
                 services.AddDbContext<AppDbContext>(opt =>
                 opt.UseInMemoryDatabase("InMemProductDb")
                 );

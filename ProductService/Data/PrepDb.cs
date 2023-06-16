@@ -1,4 +1,6 @@
-﻿using ProductService.Models;
+﻿using Microsoft.Extensions.Configuration.UserSecrets;
+using ProductService.Models;
+using Serilog;
 
 namespace ProductService.Data
 {
@@ -9,6 +11,7 @@ namespace ProductService.Data
             using (var serviceScrope = app.ApplicationServices.CreateScope())
             {
                 var context = serviceScrope.ServiceProvider.GetService<AppDbContext>();
+
                 if (context != null)
                     SeedData(context);
             }
@@ -16,10 +19,11 @@ namespace ProductService.Data
 
         private static void SeedData(AppDbContext context)
         {
+            var logger = Log.ForContext(typeof(PrepDb));
             if (!context.Products.Any())
             {
                 var rnd = new Random();
-                Console.WriteLine("--> Seeding Data...");
+                logger.Information("seeding data for products");
 
                 var products = Enumerable.Range(1, 10)
                     .Select(i =>
@@ -35,7 +39,7 @@ namespace ProductService.Data
             }
             else
             {
-                Console.WriteLine("--> NO SEED Data Already Exist");
+                logger.Information( "no seed data already exists");
             }
         }
     }
