@@ -1,4 +1,5 @@
-﻿using BasketService.Models;
+﻿using BasketService.Dtos;
+using BasketService.Models;
 
 namespace BasketService.Contracts
 {
@@ -6,6 +7,9 @@ namespace BasketService.Contracts
     {
         Task<ShoppingCart> GetBasketAsync(string userId, CancellationToken token);
         Task<ShoppingCart> UpdateBasketAsync(ShoppingCart basket, CancellationToken token);
-        Task DeleteBasketAsync(string userId, CancellationToken token);
+        Task DeleteBasketAsync(ShoppingCart basket, CancellationToken token);
+
+        //Move to message handler
+        Task UpdateProductDataAsync(UpdateProductDto dto, CancellationToken token);
     }
 }

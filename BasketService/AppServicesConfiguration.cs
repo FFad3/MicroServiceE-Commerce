@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using BasketService.Contracts;
 using BasketService.Services;
+using Redis.OM;
 
 namespace BasketService
 {
@@ -12,12 +13,11 @@ namespace BasketService
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+
             // Redis
-            services.AddStackExchangeRedisCache(opt =>
-            {
-                opt.Configuration = "basket-redis:6379";
-                opt.InstanceName = typeof(AppServicesConfiguration).Assembly.GetName().Name;
-            });
+            services.AddSingleton(new RedisConnectionProvider("http://basket-redis:6379"));
+            services.AddHostedService<IndexCreationService>();
+
             // Custom
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddScoped<IBasketRepository, BasketRepository>();

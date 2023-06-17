@@ -9,7 +9,10 @@ namespace BasketService.Profiles
         public MappingsProfile()
         {
             CreateMap<ShoppingCartItem, ShoppingCartItemDto>().ReverseMap();
-            CreateMap<ShoppingCart, ShoppingCartDto>().ReverseMap();
+            CreateMap<UpdateProductDto, ShoppingCartItem>();
+
+            CreateMap<ShoppingCartWriteDto, ShoppingCart>();
+            CreateMap<ShoppingCart, ShoppingCartReadDto>();
         }
     }
 }

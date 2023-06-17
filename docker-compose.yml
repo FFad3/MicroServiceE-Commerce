@@ -89,7 +89,7 @@ services:
 
   basket-redis:
     container_name: basket-redis
-    image: redis:alpine
+    image: redis/redis-stack
     restart: always
     ports:
       - "6379:6379"

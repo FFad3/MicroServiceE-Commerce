@@ -1,11 +1,15 @@
-﻿namespace BasketService.Models
+﻿using Redis.OM.Modeling;
+
+namespace BasketService.Models
 {
+    [Document(StorageType = StorageType.Json)]
     public class ShoppingCart
     {
-        public string Id { get; set; } = string.Empty;
+        [RedisIdField][Indexed] public string Id { get; set; } = string.Empty;
 
-        public List<ShoppingCartItem> Items { get; set; } = new List<ShoppingCartItem>();
+        [Indexed] public string[] ItemsIds { get; set; } = default!;
 
-        public decimal TotalPrice => Items.Sum(x => x.Price * x.Quantity);
+        [Indexed(CascadeDepth = 1)] public List<ShoppingCartItem> Items { get; set; } = new List<ShoppingCartItem>();
+
     }
 }

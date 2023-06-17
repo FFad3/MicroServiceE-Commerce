@@ -22,17 +22,17 @@ namespace BasketService.Controllers
         }
 
         [HttpGet("{userId}", Name = "GetBasket")]
-        public async Task<ActionResult<ShoppingCartDto>> GetBasket(string userId, CancellationToken token)
+        public async Task<ActionResult<ShoppingCartReadDto>> GetBasket(string userId, CancellationToken token)
         {
             _logger.LogInformation("Retriving basket with id : {basketId}", userId);
 
             var basket = await _basketRepository.GetBasketAsync(userId, token);
 
-            return Ok(_mapper.Map<ShoppingCartDto>(basket));
+            return Ok(_mapper.Map<ShoppingCartReadDto>(basket));
         }
 
         [HttpPost]
-        public async Task<ActionResult<ShoppingCartDto>> UpdateBasket(ShoppingCartDto basket, CancellationToken token)
+        public async Task<ActionResult<ShoppingCartReadDto>> UpdateBasket(ShoppingCartWriteDto basket, CancellationToken token)
         {
             _logger.LogInformation("Updating basket with id : {basketId}", basket.Id);
 
@@ -41,19 +41,32 @@ namespace BasketService.Controllers
             var result = await _basketRepository.UpdateBasketAsync(updatedBasket, token);
 
             _logger.LogInformation("Basket has been updated", result);
-            return Ok(_mapper.Map<ShoppingCartDto>(result));
+            return Ok(_mapper.Map<ShoppingCartReadDto>(result));
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteBasket(string userId, CancellationToken token)
         {
             _logger.LogInformation("Deleting basket with id : {basketId}", userId);
+            var basket = await _basketRepository.GetBasketAsync(userId, token);
 
-            await _basketRepository.DeleteBasketAsync(userId, token);
+            if (basket == null)
+                return NotFound();
+
+            await _basketRepository.DeleteBasketAsync(basket, token);
 
             _logger.LogInformation("Basket has been deleted");
 
             return Ok();
         }
+
+        //Remove
+        [HttpPost("product")]
+        public async Task<ActionResult> UpdateProduct(UpdateProductDto dto, CancellationToken token)
+        {
+            await _basketRepository.UpdateProductDataAsync(dto, token);
+            return Ok();
+        }
+
     }
 }

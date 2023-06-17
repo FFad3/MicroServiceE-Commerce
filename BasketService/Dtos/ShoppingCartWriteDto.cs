@@ -1,15 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using BasketService.Models;
 
 namespace BasketService.Dtos
 {
-    public record ShoppingCartReadDto
+    public record ShoppingCartWriteDto
     {
         [Required]
-        public string Id { get; set; } = string.Empty;
+        public string Id { get; set; } = default!;
 
         public List<ShoppingCartItemDto> Items { get; set; } = new List<ShoppingCartItemDto>();
 
-        public decimal TotalPrice => Items.Sum(x => x.Price * x.Quantity);
+        public string[] ItemsIds => Items.Select(x => x.Id).ToArray();
     }
 }
