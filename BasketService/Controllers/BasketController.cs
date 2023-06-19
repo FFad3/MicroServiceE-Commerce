@@ -59,14 +59,5 @@ namespace BasketService.Controllers
 
             return Ok();
         }
-
-        //Remove
-        [HttpPost("product")]
-        public async Task<ActionResult> UpdateProduct(UpdateProductDto dto, CancellationToken token)
-        {
-            await _basketRepository.UpdateProductDataAsync(dto, token);
-            return Ok();
-        }
-
     }
 }

@@ -17,7 +17,7 @@ namespace BasketService
             // Redis
             services.AddSingleton(new RedisConnectionProvider("http://basket-redis:6379"));
             services.AddHostedService<IndexCreationService>();
-
+            services.AddHostedService<ProductReciverService>();
             // Custom
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddScoped<IBasketRepository, BasketRepository>();

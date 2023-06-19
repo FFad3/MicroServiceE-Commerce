@@ -10,9 +10,6 @@ volumes:
     driver: local
   seq-logs:
     driver: local
-#HOW
-# MENAGE STARTING PROFILES DEV/DEBUG/PROD
-# STOP DOCKER COMPOSE CONTAINER ???
 services:
   product-service:
     image: ${DOCKER_REGISTRY-}product-service
@@ -97,7 +94,15 @@ services:
     - basket-redis-cache:/data
     networks:
     - services-network
-   #message-bus: rabbiitMQ
+ 
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+    - services-network
 
 
 

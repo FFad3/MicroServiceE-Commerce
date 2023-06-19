@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Messages.Messages;
 using Microsoft.AspNetCore.Mvc;
 using ProductService.Contracts;
 using ProductService.Dtos;
@@ -13,12 +14,14 @@ namespace ProductService.Controllers
         private readonly IMapper _mapper;
         private readonly IProductRepository _repository;
         private readonly ILogger<ProductController> _logger;
+        private readonly IMessageProducer _messageProducer;
 
-        public ProductController(IMapper mapper, IProductRepository repository, ILogger<ProductController> logger)
+        public ProductController(IMapper mapper, IProductRepository repository, ILogger<ProductController> logger, IMessageProducer messageProducer)
         {
             _mapper = mapper;
             _repository = repository;
             _logger = logger;
+            _messageProducer = messageProducer;
         }
 
         [HttpGet]
@@ -97,6 +100,9 @@ namespace ProductService.Controllers
 
             await _repository.SaveChangesAsync(token);
             _logger.LogInformation($"Updated product with id:{product.Id}");
+
+            _logger.LogInformation("Publishing message to Queue");
+            await _messageProducer.SendMessage(_mapper.Map<UpdateProductMessage>(updatedProduct));
 
             return Ok();
         }

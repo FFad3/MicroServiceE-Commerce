@@ -3,15 +3,13 @@
     "Docker Compose": {
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
-      "composeLaunchAction": "LaunchBrowser",
-      "composeLaunchServiceName": "basket-service",
-      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
       "serviceActions": {
-        "product-service": "DoNotStart",
+        "product-service": "StartDebugging",
         "product-db": "DoNotStart",
         "basket-service": "StartDebugging",
         "seq": "StartWithoutDebugging",
-        "basket-redis": "StartWithoutDebugging"
+        "basket-redis": "StartWithoutDebugging",
+        "rabbitmq": "StartWithoutDebugging"
       }
     }
   }
