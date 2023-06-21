@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Messages.Messages;
+using ECommerce.Common;
+using MassTransit;
 using Microsoft.AspNetCore.Mvc;
 using ProductService.Contracts;
 using ProductService.Dtos;
@@ -14,14 +15,14 @@ namespace ProductService.Controllers
         private readonly IMapper _mapper;
         private readonly IProductRepository _repository;
         private readonly ILogger<ProductController> _logger;
-        private readonly IMessageProducer _messageProducer;
+        private readonly IPublishEndpoint _publishEndpoint;
 
-        public ProductController(IMapper mapper, IProductRepository repository, ILogger<ProductController> logger, IMessageProducer messageProducer)
+        public ProductController(IMapper mapper, IProductRepository repository, ILogger<ProductController> logger, IPublishEndpoint publishEndpoint)
         {
             _mapper = mapper;
             _repository = repository;
             _logger = logger;
-            _messageProducer = messageProducer;
+            _publishEndpoint = publishEndpoint;
         }
 
         [HttpGet]
@@ -78,8 +79,14 @@ namespace ProductService.Controllers
             }
 
             _repository.Remove(product);
+
             await _repository.SaveChangesAsync(token);
+
             _logger.LogInformation($"Removed product with id:{id}");
+
+            _logger.LogInformation($"Publishing message - {nameof(ProductItemDeleted)} to Queue");
+            await _publishEndpoint.Publish(new ProductItemDeleted(product.Id), token);
+
             return Ok();
         }
 
@@ -94,15 +101,15 @@ namespace ProductService.Controllers
                 _logger.LogInformation($"Product with id:{updateProduct.Id} not found");
                 return NotFound();
             }
-            var updatedProduct = _mapper.Map<UpdateProductDto, Product>(updateProduct, product);
+            var updatedProduct = _mapper.Map(updateProduct, product);
 
             _repository.Update(updatedProduct);
 
             await _repository.SaveChangesAsync(token);
             _logger.LogInformation($"Updated product with id:{product.Id}");
 
-            _logger.LogInformation("Publishing message to Queue");
-            await _messageProducer.SendMessage(_mapper.Map<UpdateProductMessage>(updatedProduct));
+            _logger.LogInformation($"Publishing message - {nameof(ProductItemUpdated)} to Queue");
+            await _publishEndpoint.Publish(new ProductItemUpdated(updatedProduct.Id, updatedProduct.Name, updatedProduct.Price), token);
 
             return Ok();
         }

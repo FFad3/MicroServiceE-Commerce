@@ -23,7 +23,7 @@ namespace ProductService
 
                 // Add services to the container.
                 builder.Services.RegisterAllServices(builder.Environment, builder.Configuration);
-                
+
                 // Set logger as SeriLog
                 builder.Logging.ClearProviders();
                 builder.Host.UseSerilog();

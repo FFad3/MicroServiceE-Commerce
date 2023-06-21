@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BasketService.Dtos;
 using BasketService.Models;
-using Messages.Messages;
+using ECommerce.Common;
 
 namespace BasketService.Profiles
 {
@@ -13,7 +13,7 @@ namespace BasketService.Profiles
             CreateMap<ShoppingCartWriteDto, ShoppingCart>();
             CreateMap<ShoppingCart, ShoppingCartReadDto>();
             CreateMap<UpdateProductDto,ShoppingCartItem>();
-            CreateMap<UpdateProductMessage, UpdateProductDto>();
+            CreateMap<ProductItemUpdated, UpdateProductDto>();
         }
     }
 }

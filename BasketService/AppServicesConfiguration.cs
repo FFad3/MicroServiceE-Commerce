@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using BasketService.Contracts;
 using BasketService.Services;
+using ECommerce.Common.MassTransit;
 using Redis.OM;
 
 namespace BasketService
@@ -17,10 +18,10 @@ namespace BasketService
             // Redis
             services.AddSingleton(new RedisConnectionProvider("http://basket-redis:6379"));
             services.AddHostedService<IndexCreationService>();
-            services.AddHostedService<ProductReciverService>();
             // Custom
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddMassTransientWithRabbitMq();
         }
     }
 }

@@ -22,38 +22,38 @@ namespace BasketService.Controllers
         }
 
         [HttpGet("{userId}", Name = "GetBasket")]
-        public async Task<ActionResult<ShoppingCartReadDto>> GetBasket(string userId, CancellationToken token)
+        public async Task<ActionResult<ShoppingCartReadDto>> GetBasket(string userId)
         {
             _logger.LogInformation("Retriving basket with id : {basketId}", userId);
 
-            var basket = await _basketRepository.GetBasketAsync(userId, token);
+            var basket = await _basketRepository.GetBasketAsync(userId);
 
             return Ok(_mapper.Map<ShoppingCartReadDto>(basket));
         }
 
         [HttpPost]
-        public async Task<ActionResult<ShoppingCartReadDto>> UpdateBasket(ShoppingCartWriteDto basket, CancellationToken token)
+        public async Task<ActionResult<ShoppingCartReadDto>> UpdateBasket(ShoppingCartWriteDto basket)
         {
             _logger.LogInformation("Updating basket with id : {basketId}", basket.Id);
 
             var updatedBasket = _mapper.Map<ShoppingCart>(basket);
 
-            var result = await _basketRepository.UpdateBasketAsync(updatedBasket, token);
+            var result = await _basketRepository.UpdateBasketAsync(updatedBasket);
 
             _logger.LogInformation("Basket has been updated", result);
             return Ok(_mapper.Map<ShoppingCartReadDto>(result));
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteBasket(string userId, CancellationToken token)
+        public async Task<IActionResult> DeleteBasket(string userId)
         {
             _logger.LogInformation("Deleting basket with id : {basketId}", userId);
-            var basket = await _basketRepository.GetBasketAsync(userId, token);
+            var basket = await _basketRepository.GetBasketAsync(userId);
 
             if (basket == null)
                 return NotFound();
 
-            await _basketRepository.DeleteBasketAsync(basket, token);
+            await _basketRepository.DeleteBasketAsync(basket);
 
             _logger.LogInformation("Basket has been deleted");
 

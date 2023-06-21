@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
+using ECommerce.Common.MassTransit;
 using Microsoft.EntityFrameworkCore;
 using ProductService.Contracts;
 using ProductService.Data;
-using ProductService.Services;
 using Serilog;
 
 namespace ProductService
@@ -15,11 +15,12 @@ namespace ProductService
             services.RegisterDbContext(env, conf);
             services.AddControllers();
             services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddSingleton<IMessageProducer, MessageProducer>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+
+            services.AddMassTransientWithRabbitMq();
         }
 
         private static void RegisterDbContext(this IServiceCollection services, IWebHostEnvironment env, IConfiguration conf)
