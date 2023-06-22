@@ -5,15 +5,18 @@ using ECommerce.Common;
 
 namespace BasketService.Profiles
 {
-    public class MappingsProfile :Profile
+    public class MappingsProfile : Profile
     {
         public MappingsProfile()
         {
             CreateMap<ShoppingCartItem, ShoppingCartItemDto>().ReverseMap();
             CreateMap<ShoppingCartWriteDto, ShoppingCart>();
             CreateMap<ShoppingCart, ShoppingCartReadDto>();
-            CreateMap<UpdateProductDto,ShoppingCartItem>();
+            CreateMap<UpdateProductDto, ShoppingCartItem>();
             CreateMap<ProductItemUpdated, UpdateProductDto>();
+            CreateMap<ShoppingCartItem, OrderItem>()
+                .ForMember(dest => dest.Id,
+                opt => opt.MapFrom(c => int.Parse(c.Id)));
         }
     }
 }
