@@ -2,11 +2,11 @@
 using ECommerce.Common.MassTransit;
 using ECommerce.Common.Settings;
 using Microsoft.EntityFrameworkCore;
-using ProductService.Contracts;
-using ProductService.Data;
+using OrderService.Contracts;
+using OrderService.Data;
 using Serilog;
 
-namespace ProductService
+namespace OrderService
 {
     public static class AppServicesConfiguration
     {
@@ -15,15 +15,17 @@ namespace ProductService
             // Add services to the container.
             services.RegisterDbContext(conf);
             services.AddControllers();
-            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
             services.AddMassTransientWithRabbitMq();
         }
-
         private static void RegisterDbContext(this IServiceCollection services, IConfiguration conf)
         {
             var dbSettings = conf.GetSection(nameof(DbContextSettings)).Get<DbContextSettings>()

@@ -42,7 +42,7 @@ namespace BasketService.Controllers
         [HttpPost]
         public async Task<ActionResult<ShoppingCartReadDto>> UpdateBasket(ShoppingCartWriteDto basket)
         {
-            _logger.LogInformation("Updating basket with id : {basketId}", basket.Id);
+            _logger.LogInformation("Updating basket with id : {basketId}", basket.UserId);
 
             var updatedBasket = _mapper.Map<ShoppingCart>(basket);
 
@@ -79,7 +79,7 @@ namespace BasketService.Controllers
                 return NotFound();
 
             var items = _mapper.Map<OrderItem[]>(basket.Items);
-            var order = new OrderPlaced(basket.Id, items, DateTime.UtcNow);
+            var order = new OrderPlaced(basket.UserId, items, DateTime.UtcNow);
 
             _logger.LogInformation($"Publishing message - {nameof(OrderPlaced)} to Queue Payload:{JsonConvert.SerializeObject(order)}");
             await _publishEndpoint.Publish(order, token);

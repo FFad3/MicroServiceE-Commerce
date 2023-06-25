@@ -6,10 +6,26 @@
       "serviceActions": {
         "product-service": "StartDebugging",
         "product-db": "DoNotStart",
+        "order-service": "StartDebugging",
+        "order-db": "DoNotStart",
         "basket-service": "StartDebugging",
-        "seq": "StartWithoutDebugging",
         "basket-redis": "StartWithoutDebugging",
+        "seq": "StartWithoutDebugging",
         "rabbitmq": "StartWithoutDebugging"
+      }
+    },
+    "DevProduct-Service": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "serviceActions": {
+        "basket-redis": "DoNotStart",
+        "basket-service": "DoNotStart",
+        "order-db": "StartWithoutDebugging",
+        "order-service": "DoNotStart",
+        "product-db": "DoNotStart",
+        "product-service": "DoNotStart",
+        "rabbitmq": "DoNotStart",
+        "seq": "DoNotStart"
       }
     }
   }

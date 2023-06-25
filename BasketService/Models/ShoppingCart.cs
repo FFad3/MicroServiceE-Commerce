@@ -5,7 +5,7 @@ namespace BasketService.Models
     [Document(StorageType = StorageType.Json)]
     public class ShoppingCart
     {
-        [RedisIdField][Indexed] public string Id { get; set; } = string.Empty;
+        [RedisIdField][Indexed] public string UserId { get; set; } = string.Empty;
 
         [Indexed] public string[] ItemsIds { get; set; } = default!;
 

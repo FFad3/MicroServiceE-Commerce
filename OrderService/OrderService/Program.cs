@@ -1,8 +1,8 @@
-using ProductService.Data;
+using OrderService.Data;
 using Serilog;
 using Serilog.Events;
 
-namespace ProductService
+namespace OrderService
 {
     public class Program
     {
@@ -43,7 +43,7 @@ namespace ProductService
 
                 app.MapControllers();
 
-                app.MigrateDatabase();
+                //app.MigrateDatabase();
 
                 app.Run();
             }

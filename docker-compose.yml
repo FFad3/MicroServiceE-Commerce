@@ -6,6 +6,8 @@ networks:
 volumes:
   products-db:
     driver: local
+  order-db:
+    driver: local
   basket-redis-cache:
     driver: local
   seq-logs:
@@ -33,7 +35,7 @@ services:
     - seq
 
   product-db:
-    container_name: products-database
+    container_name: product-db
     image: mcr.microsoft.com/mssql/server:2019-latest
     environment:
         MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
@@ -42,6 +44,41 @@ services:
     - "1433:1433"
     volumes:
     - products-db:/var/opt/mssql
+    networks:
+    - services-network 
+  
+  order-service:
+    image: ${DOCKER_REGISTRY-}order-service
+    build:
+      context: .
+      dockerfile: OrderService/OrderService/Dockerfile
+    container_name: order-service
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENV_ORDER_SERVICE}
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+    - "5004:80"
+    - "5005:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+    networks:
+    - services-network
+    depends_on:
+    - order-db
+    - seq
+
+
+  order-db:
+    container_name: order-db
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+        MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD}
+        ACCEPT_EULA: "Y"
+    ports:
+    - "1432:1433"
+    volumes:
+    - order-db:/var/opt/mssql
     networks:
     - services-network 
 
@@ -64,6 +101,7 @@ services:
     - services-network
     depends_on:
     - basket-redis
+    - seq
 
   seq:
     image: datalust/seq:latest

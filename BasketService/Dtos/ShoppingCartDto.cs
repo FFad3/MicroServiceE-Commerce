@@ -6,7 +6,7 @@ namespace BasketService.Dtos
     public record ShoppingCartReadDto
     {
         [Required]
-        public string Id { get; set; } = string.Empty;
+        public string UserId { get; set; } = string.Empty;
 
         public List<ShoppingCartItemDto> Items { get; set; } = new List<ShoppingCartItemDto>();
 

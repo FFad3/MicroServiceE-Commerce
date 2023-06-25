@@ -15,7 +15,7 @@ namespace BasketService.Profiles
             CreateMap<UpdateProductDto, ShoppingCartItem>();
             CreateMap<ProductItemUpdated, UpdateProductDto>();
             CreateMap<ShoppingCartItem, OrderItem>()
-                .ForMember(dest => dest.Id,
+                .ForMember(dest => dest.ProductId,
                 opt => opt.MapFrom(c => int.Parse(c.Id)));
         }
     }

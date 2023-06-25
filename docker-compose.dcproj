@@ -7,12 +7,9 @@
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>basket-service</DockerServiceName>
-	<DockerComposeProjectName>microservice-ecommerce</DockerComposeProjectName>
+    <DockerComposeProjectName>microservice-ecommerce</DockerComposeProjectName>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="docker-compose.override.yml">
-      <DependentUpon>docker-compose.yml</DependentUpon>
-    </None>
     <None Include="docker-compose.yml" />
     <None Include=".dockerignore" />
   </ItemGroup>

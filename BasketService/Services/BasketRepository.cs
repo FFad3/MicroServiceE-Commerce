@@ -32,7 +32,7 @@ namespace BasketService.Services
 
             if (basket is null)
             {
-                return new ShoppingCart { Id = userId };
+                return new ShoppingCart { UserId = userId };
             }
 
             return basket;
@@ -43,7 +43,7 @@ namespace BasketService.Services
         {
             await _carts.UpdateAsync(basket);
 
-            return await GetBasketAsync(basket.Id);
+            return await GetBasketAsync(basket.UserId);
         }
 
         public async Task UpdateProductDataAsync(UpdateProductDto dto)

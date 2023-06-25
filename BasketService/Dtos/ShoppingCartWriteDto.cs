@@ -5,7 +5,7 @@ namespace BasketService.Dtos
     public record ShoppingCartWriteDto
     {
         [Required]
-        public string Id { get; set; } = default!;
+        public string UserId { get; set; } = default!;
 
         public List<ShoppingCartItemDto> Items { get; set; } = new List<ShoppingCartItemDto>();
 
