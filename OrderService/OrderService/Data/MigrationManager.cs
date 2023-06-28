@@ -12,9 +12,8 @@ namespace OrderService.Data
                 {
                     try
                     {
-                        db.Database.EnsureCreated();
-
-                        if (db.Database.GetPendingMigrations().Any())
+                        var migrations = db.Database.GetPendingMigrations();
+                        if (migrations.Any())
                         {
                             db.Database.Migrate();
                         }

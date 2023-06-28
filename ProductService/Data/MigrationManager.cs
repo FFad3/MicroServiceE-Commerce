@@ -12,8 +12,6 @@ namespace ProductService.Data
                 {
                     try
                     {
-                        db.Database.EnsureCreated();
-
                         var migrations = db.Database.GetPendingMigrations();
                         if (migrations.Any())
                             db.Database.Migrate();

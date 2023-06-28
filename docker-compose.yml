@@ -68,7 +68,6 @@ services:
     - order-db
     - seq
 
-
   order-db:
     container_name: order-db
     image: mcr.microsoft.com/mssql/server:2019-latest
